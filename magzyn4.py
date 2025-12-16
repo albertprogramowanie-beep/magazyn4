@@ -3,6 +3,47 @@ import streamlit as st
 # --- Konfiguracja strony ---
 st.set_page_config(page_title="Świąteczny Magazyn", page_icon="🎅")
 
+# ==========================================
+# --- SEKCJA CSS (TŁO ŚWIĄTECZNE) ---
+# ==========================================
+# Funkcja wstrzykująca CSS, aby ustawić tło.
+# Wybrałem klimatyczne zdjęcie z Unsplash (darmowe do użytku).
+def set_christmas_background():
+    st.markdown(
+        """
+        <style>
+        /* 1. Ustawienie obrazka tła dla całej aplikacji */
+        .stApp {
+            /* Link do obrazka - możesz go podmienić na inny URL */
+            background-image: url("https://images.unsplash.com/photo-1512389142860-9c449e58c543?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        /* 2. Stylizacja głównego kontenera z treścią */
+        /* Dodajemy białe, półprzezroczyste tło, żeby tekst był czytelny na zdjęciu */
+        .block-container {
+            background-color: rgba(255, 255, 255, 0.85); /* Biały kolor, 85% nieprzezroczystości */
+            padding: 2rem;   /* Margines wewnętrzny */
+            border-radius: 15px; /* Zaokrąglone rogi */
+            margin-top: 3rem;  /* Odstęp od góry strony */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* Lekki cień dla efektu głębi */
+        }
+
+        /* Opcjonalnie: zmiana koloru nagłówków na bardziej świąteczny (ciemnoczerwony) */
+        h1, h2, h3 {
+            color: #8b0000 !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+# Wywołanie funkcji ustawiającej tło na samym początku
+set_christmas_background()
+# ==========================================
+
+
 # --- Funkcje pomocnicze (Callbacks) ---
 # Ta funkcja wykona się po kliknięciu przycisku "Usuń",
 # zanim strona spróbuje się przerysować. To zapobiega błędom.
@@ -17,8 +58,8 @@ def usun_produkt_z_listy():
 col_header, col_santa = st.columns([4, 1])
 
 with col_header:
-    st.title("📦 Prosty Magazyn")
-    st.write("Aplikacja do zarządzania listą produktów (tylko nazwy).")
+    st.title("📦 Świąteczny Magazyn") # Zmieniłem tytuł, żeby pasował do tła
+    st.write("Aplikacja do zarządzania listą prezentów (tylko nazwy).")
 
 with col_santa:
     # Wyświetlamy obrazek z adresu URL. Możesz podmienić link na inny.
@@ -65,7 +106,8 @@ st.header(f"Stan magazynowy ({len(st.session_state.produkty)})")
 if st.session_state.produkty:
     # Wyświetlamy listę w ładniejszy sposób
     for i, produkt in enumerate(st.session_state.produkty, 1):
-        st.markdown(f"**{i}.** {produkt}")
+        # Używamy HTML w markdown, żeby dodać ikonkę prezentu do listy
+        st.markdown(f"🎁 **{i}.** {produkt}")
 else:
     st.info("Magazyn jest pusty. Mikołaj wszystko rozdał!")
 
